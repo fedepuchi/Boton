@@ -30,10 +30,8 @@ let state = {
 };
 
 const MESSAGES = [
-  "BUUUUUUEEEENNAAAASSS",
-  "BUENOS DIASSSS",
-  "SE A ACTIVADO EL BOTON",
-  "COMO VA TODO?"
+  "PUTO EL QUE LEE",
+  "UN PUTO TOCO EL BOTON"
 ];
 
 function getRandom(arr) {
