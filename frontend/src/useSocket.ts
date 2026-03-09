@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
 // 👇 Change this to your backend URL when deployed
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
+const BACKEND_URL = (import.meta.env["VITE_BACKEND_URL"] as string) || "http://localhost:3001";
 
 interface State {
   count: number;
