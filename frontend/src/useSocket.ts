@@ -14,6 +14,7 @@ interface PressEvent {
   count: number;
   lastPressed: number;
   message: string;
+  milestone?: string | null;
 }
 
 export function useSocket() {
@@ -23,6 +24,8 @@ export function useSocket() {
   const [notification, setNotification] = useState<string | null>(null);
   const [myMessage, setMyMessage] = useState<string | null>(null);
   const [remoteAnimating, setRemoteAnimating] = useState(false);
+  const [milestone, setMilestone] = useState<string | null>(null);
+  const milestoneTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const notifTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -45,6 +48,11 @@ export function useSocket() {
       setTimeout(() => setRemoteAnimating(false), 800);
       if (notifTimeout.current) clearTimeout(notifTimeout.current);
       notifTimeout.current = setTimeout(() => setNotification(null), 4000);
+      if (data.milestone) {
+        setMilestone(data.milestone);
+        if (milestoneTimeout.current) clearTimeout(milestoneTimeout.current);
+        milestoneTimeout.current = setTimeout(() => setMilestone(null), 5000);
+      }
     });
 
     // My own press confirmed
@@ -52,6 +60,11 @@ export function useSocket() {
       setState(s => ({ ...s, count: data.count, lastPressed: data.lastPressed }));
       setMyMessage(data.message);
       setTimeout(() => setMyMessage(null), 4000);
+      if (data.milestone) {
+        setMilestone(data.milestone);
+        if (milestoneTimeout.current) clearTimeout(milestoneTimeout.current);
+        milestoneTimeout.current = setTimeout(() => setMilestone(null), 5000);
+      }
     });
 
     return () => {
@@ -63,5 +76,6 @@ export function useSocket() {
     socketRef.current?.emit("press");
   };
 
-  return { connected, state, notification, myMessage, remoteAnimating, press };
+  return { connected, state, notification, myMessage, remoteAnimating, milestone, press };
+
 }

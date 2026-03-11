@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useSocket } from "./useSocket";
 
 export default function App() {
-  const { connected, state, notification, myMessage, remoteAnimating, press } = useSocket();
+  const { connected, state, notification, myMessage, remoteAnimating, milestone, press } = useSocket();
   const [pressing, setPressing] = useState(false);
   const [ripples, setRipples] = useState<number[]>([]);
   const [localAnimating, setLocalAnimating] = useState(false);
@@ -139,6 +139,8 @@ export default function App() {
             transition: "all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1)",
             outline: "none",
             opacity: connected ? 1 : 0.5,
+            WebkitTapHighlightColor: "transparent",
+
           }}
         >
           <div style={{
@@ -215,6 +217,39 @@ export default function App() {
             flexShrink: 0, animation: "blink 1s infinite", display: "inline-block",
           }} />
           {notification}
+        </div>
+      )}
+      {milestone && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 200,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "rgba(219,234,254,0.7)",
+          backdropFilter: "blur(8px)",
+          animation: "fadeInUp 0.4s ease",
+        }}>
+          <div style={{
+            background: "rgba(255,255,255,0.9)",
+            border: "2px solid rgba(59,130,246,0.4)",
+            borderRadius: 28,
+            padding: "48px 56px",
+            textAlign: "center",
+            boxShadow: "0 20px 60px rgba(30,58,138,0.2)",
+            maxWidth: "80vw",
+          }}>
+            <div style={{ fontSize: 64, marginBottom: 16 }}>🎉</div>
+            <div style={{
+              fontSize: 28, fontWeight: 700, color: "#1e3a8a",
+              lineHeight: 1.3, letterSpacing: "-0.01em",
+            }}>
+              {milestone}
+            </div>
+            <div style={{
+              marginTop: 16, fontSize: 13, color: "rgba(30,64,175,0.5)",
+              letterSpacing: "0.1em",
+            }}>
+              TOCA PARA CONTINUAR
+            </div>
+          </div>
         </div>
       )}
 
